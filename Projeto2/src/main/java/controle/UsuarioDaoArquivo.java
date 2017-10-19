@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import modelo.Usuario;
+import modelo.Movimentacao;
 
 /**
  *
@@ -45,7 +46,7 @@ public class UsuarioDaoArquivo {
         }
     }
     
-    public boolean adicionarUsuario(Usuario u) throws IOException, FileNotFoundException, ClassNotFoundException{
+    public boolean addUsuario(Usuario u) throws IOException, FileNotFoundException, ClassNotFoundException{
         List<Usuario> usuarios = listar();
         if (usuarios.add(u)){
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo));
@@ -68,6 +69,35 @@ public class UsuarioDaoArquivo {
         else{
             return false;
         }        
+    }
+          
+    public boolean addMovimentacao(String email, Movimentacao mov) throws IOException, FileNotFoundException, ClassNotFoundException{
+        List<Usuario> usuarios = listar();
+        for (int i = 0; i < usuarios.size(); i++){
+            if (email.equals(usuarios.get(i).getEmail())){
+                usuarios.get(i).adicionaMovimentacao(mov);
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo));
+                out.writeObject(usuarios);
+                out.close();
+                return true;                
+            }
+            
+        }
+        return false;
+    }
+    
+    public boolean atualizar(Usuario u) throws IOException, FileNotFoundException, ClassNotFoundException {
+        List<Usuario> usuarios = listar();
+        for (int i = 0; i < usuarios.size(); i++){
+            if (u.getEmail().equals(usuarios.get(i).getEmail())){
+                usuarios.set(i, u);
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo));
+                out.writeObject(usuarios);
+                out.close();
+                return true;
+            }
+        }
+        return false;
     }
 
     

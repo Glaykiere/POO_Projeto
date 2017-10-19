@@ -121,7 +121,7 @@ public class Usuario {
         return "Usuario{" + "email=" + email + ", nome=" + nome + ", nascimento=" + nascimento + ", sexo=" + sexo + ", senha=" + senha + ", movimentacao=" + movimentacao + '}';
     }
     
-    public boolean adicionarMovimentacao(Movimentacao m){
+    public boolean adicionaMovimentacao(Movimentacao m){
         return movimentacao.add(m);
     }
     
