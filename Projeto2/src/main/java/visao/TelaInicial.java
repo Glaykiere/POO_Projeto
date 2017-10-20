@@ -84,14 +84,14 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void botaoCadMovimentacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadMovimentacaoActionPerformed
         // TODO add your handling code here:
-        TelaCadastroMovimentacao tela = new TelaCadastroMovimentacao();
+        TelaCadastrarMovimentacao tela = new TelaCadastrarMovimentacao();
         tela.setVisible(true);
         dispose();
     }//GEN-LAST:event_botaoCadMovimentacaoActionPerformed
 
     private void botaoGerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoGerPerfilActionPerformed
         // TODO add your handling code here:
-        TelaCadastroUsuario tela = new TelaCadastroUsuario();
+        TelaCadastrarUsuario tela = new TelaCadastrarUsuario();
         tela.setVisible(true);
         dispose();
     }//GEN-LAST:event_botaoGerPerfilActionPerformed

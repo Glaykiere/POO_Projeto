@@ -115,7 +115,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private void botaoCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroActionPerformed
         // TODO add your handling code here:
-        TelaCadastroUsuario tela = new TelaCadastroUsuario();
+        TelaCadastrarUsuario tela = new TelaCadastrarUsuario();
         tela.setVisible(true);
         dispose();
     }//GEN-LAST:event_botaoCadastroActionPerformed
