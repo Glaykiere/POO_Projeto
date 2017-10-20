@@ -36,7 +36,7 @@ public class UsuarioDaoArquivo {
         }
     }
     
-    private List<Usuario> listar() throws FileNotFoundException, IOException, ClassNotFoundException {
+    public List<Usuario> listar() throws FileNotFoundException, IOException, ClassNotFoundException {
         if (arquivo.length()>0){
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(arquivo));
             return (List<Usuario>) in.readObject();
@@ -70,7 +70,31 @@ public class UsuarioDaoArquivo {
             return false;
         }        
     }
-          
+    
+    public boolean atualizar(Usuario u) throws IOException, FileNotFoundException, ClassNotFoundException {
+        List<Usuario> usuarios = listar();
+        for (int i = 0; i < usuarios.size(); i++){
+            if (u.getEmail().equals(usuarios.get(i).getEmail())){
+                usuarios.set(i, u);
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo));
+                out.writeObject(usuarios);
+                out.close();
+                return true;
+            }
+        }
+        return false;
+    } 
+    
+    public List<Movimentacao> listar(Usuario u) throws FileNotFoundException, IOException, ClassNotFoundException {
+        if (arquivo.length()>0){
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(arquivo));
+            return (List<Movimentacao>) in.readObject();
+        }
+        else{
+            return new ArrayList<>();
+        }
+    }
+    
     public boolean addMovimentacao(String email, Movimentacao mov) throws IOException, FileNotFoundException, ClassNotFoundException{
         List<Usuario> usuarios = listar();
         for (int i = 0; i < usuarios.size(); i++){
@@ -85,21 +109,5 @@ public class UsuarioDaoArquivo {
         }
         return false;
     }
-    
-    public boolean atualizar(Usuario u) throws IOException, FileNotFoundException, ClassNotFoundException {
-        List<Usuario> usuarios = listar();
-        for (int i = 0; i < usuarios.size(); i++){
-            if (u.getEmail().equals(usuarios.get(i).getEmail())){
-                usuarios.set(i, u);
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo));
-                out.writeObject(usuarios);
-                out.close();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    
     
 }

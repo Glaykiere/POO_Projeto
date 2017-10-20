@@ -5,17 +5,28 @@
  */
 package visao;
 
+import controle.UsuarioDaoArquivo;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Movimentacao;
+import modelo.Usuario;
+
 /**
  *
  * @author glaykiere
  */
 public class TelaGerenciarFinancas extends javax.swing.JFrame {
+    
 
     /**
      * Creates new form TelaGerenciarFinancas
      */
     public TelaGerenciarFinancas() {
         initComponents();
+        inicializarTabela();
     }
 
     /**
@@ -35,15 +46,12 @@ public class TelaGerenciarFinancas extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Tela de Gerenciamento de Finanças");
 
         jLabel1.setText("Data Inicial");
 
         jLabel2.setText("Data Final");
-
-        jFormattedTextField1.setText("jFormattedTextField1");
-
-        jFormattedTextField2.setText("jFormattedTextField2");
 
         botaoCalendario.setText("Calendário");
 
@@ -142,4 +150,33 @@ public class TelaGerenciarFinancas extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    private void inicializarTabela() {
+        String titulo[] = {"Data", "Descricao", "Tipo", "Valor"};
+        List<Movimentacao> movimentacoes = null;
+        
+        
+        String matriz[][];
+        
+        if (movimentacoes == null){
+            matriz = new String[1][3];
+            matriz[0][0] = "";
+            matriz[0][1] = "";
+            matriz[0][2] = "";
+            
+        }
+        else{
+            matriz = new String[movimentacoes.size()][4];
+            
+            for (int i = 0; i < movimentacoes.size(); i++){
+                Movimentacao m = movimentacoes.get(i);
+                matriz[i][0] = ""+m.getCodigo();
+                matriz[i][1] = m.getDescricao();
+                matriz[i][2] = ""+m.getValor();
+            }
+        }
+        
+        DefaultTableModel modelo = new DefaultTableModel(matriz, titulo);
+        jTable1.setModel(modelo);
+    }
 }

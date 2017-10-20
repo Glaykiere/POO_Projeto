@@ -52,6 +52,11 @@ public class TelaLogin extends javax.swing.JFrame {
         jLabel3.setText("Não possui conta?");
 
         botaoCadastro.setText("Cadastrar");
+        botaoCadastro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,10 +108,17 @@ public class TelaLogin extends javax.swing.JFrame {
     private void botaoLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLoginActionPerformed
         // TODO add your handling code here:
         
-        TelaCadastroUsuario tela = new TelaCadastroUsuario();
+        TelaInicial tela = new TelaInicial();
         tela.setVisible(true);
         dispose();
     }//GEN-LAST:event_botaoLoginActionPerformed
+
+    private void botaoCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroActionPerformed
+        // TODO add your handling code here:
+        TelaCadastroUsuario tela = new TelaCadastroUsuario();
+        tela.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_botaoCadastroActionPerformed
 
     /**
      * @param args the command line arguments

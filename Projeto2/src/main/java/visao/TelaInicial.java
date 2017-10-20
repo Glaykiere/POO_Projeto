@@ -27,26 +27,31 @@ public class TelaInicial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        botaoCadMovimentacao = new javax.swing.JButton();
+        botaoGerFinancas = new javax.swing.JButton();
+        botaoGerPerfil = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela Inicial");
 
-        jButton1.setText("Cadastrar Movimentação");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        botaoCadMovimentacao.setText("Cadastrar Movimentação");
+        botaoCadMovimentacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                botaoCadMovimentacaoActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Gerenciar Finanças");
-
-        jButton3.setText("Gerenciar Perfil");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        botaoGerFinancas.setText("Gerenciar Finanças");
+        botaoGerFinancas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                botaoGerFinancasActionPerformed(evt);
+            }
+        });
+
+        botaoGerPerfil.setText("Gerenciar Perfil");
+        botaoGerPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoGerPerfilActionPerformed(evt);
             }
         });
 
@@ -56,11 +61,11 @@ public class TelaInicial extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(botaoCadMovimentacao)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(botaoGerFinancas)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(botaoGerPerfil)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -68,28 +73,35 @@ public class TelaInicial extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(botaoCadMovimentacao)
+                    .addComponent(botaoGerFinancas)
+                    .addComponent(botaoGerPerfil))
                 .addContainerGap(259, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void botaoCadMovimentacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadMovimentacaoActionPerformed
         // TODO add your handling code here:
         TelaCadastroMovimentacao tela = new TelaCadastroMovimentacao();
         tela.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_botaoCadMovimentacaoActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void botaoGerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoGerPerfilActionPerformed
         // TODO add your handling code here:
         TelaCadastroUsuario tela = new TelaCadastroUsuario();
         tela.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_botaoGerPerfilActionPerformed
+
+    private void botaoGerFinancasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoGerFinancasActionPerformed
+        // TODO add your handling code here:
+        TelaGerenciarFinancas tela = new TelaGerenciarFinancas();
+        tela.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_botaoGerFinancasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,8 +139,8 @@ public class TelaInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton botaoCadMovimentacao;
+    private javax.swing.JButton botaoGerFinancas;
+    private javax.swing.JButton botaoGerPerfil;
     // End of variables declaration//GEN-END:variables
 }
