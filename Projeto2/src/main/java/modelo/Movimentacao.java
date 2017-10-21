@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author glaykiere
  */
-public class Movimentacao {
+public class Movimentacao{
     private int codigo;
     private String descricao;
     private LocalDate dataMov;
