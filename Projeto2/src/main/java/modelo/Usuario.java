@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Objects;
  *
  * @author glaykiere
  */
-public class Usuario {
+public class Usuario implements Serializable{
     private String email;
     private String nome;
     private LocalDate nascimento;
