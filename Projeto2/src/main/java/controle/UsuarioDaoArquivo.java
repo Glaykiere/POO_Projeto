@@ -83,7 +83,17 @@ public class UsuarioDaoArquivo {
             }
         }
         return false;
-    } 
+    }
+    
+    public Usuario buscar(String email) throws IOException, FileNotFoundException, ClassNotFoundException{
+        List<Usuario> usuarios = listar();
+        for (Usuario u : usuarios){
+            if (u.getEmail().equals(email)){
+                return u;
+            }
+        }
+        return null;
+    }
     
     public List<Movimentacao> listar(Usuario u) throws FileNotFoundException, IOException, ClassNotFoundException {
         if (arquivo.length()>0){
