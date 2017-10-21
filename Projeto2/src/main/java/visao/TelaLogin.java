@@ -5,6 +5,13 @@
  */
 package visao;
 
+import controle.UsuarioDaoArquivo;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import modelo.Usuario;
+
 /**
  *
  * @author glaykiere
@@ -108,9 +115,34 @@ public class TelaLogin extends javax.swing.JFrame {
     private void botaoLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLoginActionPerformed
         // TODO add your handling code here:
         
-        TelaInicial tela = new TelaInicial();
-        tela.setVisible(true);
-        dispose();
+        
+        try {
+            UsuarioDaoArquivo dao = new UsuarioDaoArquivo();
+            Usuario u = dao.buscar(campoEmail.getText());
+            if (u == null){
+                JOptionPane.showMessageDialog(null, "Usuario nao existe", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                String senha = new String(campoSenha.getPassword());
+                if (u.autenticar(campoEmail.getText(), senha)){
+                    JOptionPane.showMessageDialog(null, "Bem Vindo " +u.getNome());
+                    TelaInicial tela = new TelaInicial();
+                    tela.setVisible(true);
+                    dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Senha incorreta", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+            
+            
+            
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }//GEN-LAST:event_botaoLoginActionPerformed
 
     private void botaoCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroActionPerformed
