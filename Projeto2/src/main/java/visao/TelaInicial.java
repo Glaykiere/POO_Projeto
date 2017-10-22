@@ -5,17 +5,20 @@
  */
 package visao;
 
+import modelo.Usuario;
+
 /**
  *
  * @author glaykiere
  */
 public class TelaInicial extends javax.swing.JFrame {
-
+    private Usuario u;
     /**
      * Creates new form TelaInicial
      */
     public TelaInicial() {
         initComponents();
+        
     }
 
     /**
@@ -33,6 +36,11 @@ public class TelaInicial extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela Inicial");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         botaoCadMovimentacao.setText("Cadastrar Movimentação");
         botaoCadMovimentacao.addActionListener(new java.awt.event.ActionListener() {
@@ -91,8 +99,9 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void botaoGerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoGerPerfilActionPerformed
         // TODO add your handling code here:
-        TelaCadastrarUsuario tela = new TelaCadastrarUsuario();
+        TelaAtualizarUsuario tela = new TelaAtualizarUsuario();        
         tela.setVisible(true);
+        tela.recebeUsuario(u);
         dispose();
     }//GEN-LAST:event_botaoGerPerfilActionPerformed
 
@@ -102,6 +111,13 @@ public class TelaInicial extends javax.swing.JFrame {
         tela.setVisible(true);
         dispose();
     }//GEN-LAST:event_botaoGerFinancasActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        TelaLogin tela = new TelaLogin();
+        tela.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -143,4 +159,9 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JButton botaoGerFinancas;
     private javax.swing.JButton botaoGerPerfil;
     // End of variables declaration//GEN-END:variables
+
+    public void recebeUsuario(Usuario u) {
+        this.u = u;
+        
+    }
 }
