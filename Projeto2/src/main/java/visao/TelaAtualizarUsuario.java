@@ -5,17 +5,35 @@
  */
 package visao;
 
+import controle.UsuarioDaoArquivo;
+import excecao.FormularioException;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import modelo.Usuario;
+
 /**
  *
  * @author glaykiere
  */
 public class TelaAtualizarUsuario extends javax.swing.JFrame {
+    private final UsuarioDaoArquivo dao;
+    private Usuario u;
 
     /**
      * Creates new form TelaCadastro
      */
     public TelaAtualizarUsuario() {
+        
         initComponents();
+        dao = new UsuarioDaoArquivo();
+        
+        
     }
 
     /**
@@ -47,6 +65,14 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela de Cadastro de Usuário");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabel1.setText("Email");
 
@@ -72,8 +98,18 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
         });
 
         botaoAtualizar.setText("Atualizar");
+        botaoAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoAtualizarActionPerformed(evt);
+            }
+        });
 
         botaoCancelar.setText("Cancelar");
+        botaoCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCancelarActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Calendário");
 
@@ -158,6 +194,67 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_radioFemininoActionPerformed
 
+    private void botaoAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAtualizarActionPerformed
+        // TODO add your handling code here:
+        try {
+            if(validaCadastro()){
+                Usuario atualizado = atualiza();
+                if (dao.atualizar(atualizado)){
+                    JOptionPane.showMessageDialog(null, "Usuario Atualizado com Sucesso");
+                    
+                    dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Erro");
+                }                
+                
+                JOptionPane.showMessageDialog(null, dao.listar());
+            }
+            
+        } 
+        catch (FormularioException | IOException ex){
+              JOptionPane.showMessageDialog(null, ex.getMessage(), "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (DateTimeParseException ex){
+              JOptionPane.showMessageDialog(null, "Data Invalida", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaCadastrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_botaoAtualizarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        campoEmail.setText(u.getEmail());
+        campoEmail.setEnabled(false);
+        campoNome.setText(u.getNome());
+        campoNascimento.setText(u.getNascimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        if (u.getSexo().equals("Feminino")){
+            radioFeminino.setSelected(true);
+        }
+        else{
+            radioMasculino.setSelected(true);
+        }
+        campoSenha.setText(u.getSenha());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
+        // TODO add your handling code here:
+        TelaInicial tela = new TelaInicial();
+        tela.setVisible(true);
+        recebeUsuario(u);
+        dispose();
+    }//GEN-LAST:event_botaoCancelarActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        TelaInicial tela = new TelaInicial();
+        tela.setVisible(true);
+        tela.recebeUsuario(u);
+        dispose();
+    }//GEN-LAST:event_formWindowClosed
+
     /**
      * @param args the command line arguments
      */
@@ -174,15 +271,18 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaAtualizarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaAtualizarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaAtualizarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaAtualizarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -219,4 +319,62 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioFeminino;
     private javax.swing.JRadioButton radioMasculino;
     // End of variables declaration//GEN-END:variables
+
+    void recebeUsuario(Usuario u) {
+        this.u = u;
+    }
+
+    private boolean validaCadastro() throws FormularioException {
+        if (campoEmail.getText().equals("")){
+            throw new FormularioException("O campo Email nao pode ser vazio");
+        }
+        else{
+            if (campoNome.getText().equals("")){
+                throw new FormularioException("O campo Nome nao pode ser vazio");
+            }
+            else{
+                if (campoNascimento.getText().equals("  /  /    ")){
+                    throw new FormularioException("O campo Nascimento deve ser preenchido corretamente");
+                }
+                else{
+                    if (!radioFeminino.isSelected() && !radioMasculino.isSelected()){
+                      throw new FormularioException("Selecione um Sexo");
+                    }
+                    else{
+                        if (campoSenha.getPassword().length == 0){
+                            throw new FormularioException("O campo Senha nao pode ser vazio");
+                        }
+                        else{
+                            if (!Arrays.equals(campoConfirmarSenha.getPassword(), campoSenha.getPassword())){
+                                throw new FormularioException("Senhas nao conferem");
+                            }
+                            
+                        }
+
+                    }
+                    
+                }
+                
+            }
+                        
+        }
+        return true;
+    }
+
+    private Usuario atualiza() {
+        u.setNome(campoNome.getText());        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String sNascimento = campoNascimento.getText();
+        u.setNascimento(LocalDate.parse(sNascimento, formatter));
+        if (radioFeminino.isSelected()){
+            u.setSexo("Feminino");
+        }
+        else{
+            u.setSexo("Masculino");
+        }
+        u.setSenha(new String(campoSenha.getPassword()));
+        
+        return u;
+    }
+
 }
