@@ -48,15 +48,16 @@ public class UsuarioDaoArquivo {
     
     public boolean addUsuario(Usuario u) throws IOException, FileNotFoundException, ClassNotFoundException{
         List<Usuario> usuarios = listar();
-        if (usuarios.add(u)){
+        Usuario user = buscar(u.getEmail());
+        if (user == null){
+            usuarios.add(u);
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo));
             out.writeObject(usuarios);
             out.close();
             return true;
         }
-        else{
-            return false;
-        }
+        return false;
+       
     }
     
     public boolean removerUsuario(Usuario u) throws IOException, FileNotFoundException, ClassNotFoundException{
