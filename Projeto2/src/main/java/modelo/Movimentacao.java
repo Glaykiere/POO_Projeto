@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -12,16 +13,17 @@ import java.util.Objects;
  *
  * @author glaykiere
  */
-public class Movimentacao{
-    private int codigo;
+public class Movimentacao implements Serializable{
+    private static int cont;
+    private final int codigo;
     private String descricao;
     private LocalDate dataMov;
     private float valor;
     private String tipo;
     private String categoria;
 
-    public Movimentacao(int codigo, String descricao, LocalDate dataMov, float valor, String tipo, String categoria) {
-        this.codigo = codigo;
+    public Movimentacao(String descricao, LocalDate dataMov, float valor, String tipo, String categoria) {
+        this.codigo = cont++;
         this.descricao = descricao;
         this.dataMov = dataMov;
         this.valor = valor;
@@ -31,10 +33,6 @@ public class Movimentacao{
 
     public int getCodigo() {
         return codigo;
-    }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
     }
 
     public String getDescricao() {
