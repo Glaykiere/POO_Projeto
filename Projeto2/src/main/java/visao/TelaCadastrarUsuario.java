@@ -7,7 +7,6 @@ package visao;
 
 import controle.UsuarioDaoArquivo;
 import excecao.FormularioException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,7 +23,7 @@ import modelo.Usuario;
  */
 public class TelaCadastrarUsuario extends javax.swing.JFrame {
         
-    private UsuarioDaoArquivo dao;
+    private final UsuarioDaoArquivo dao;
 
     /**
      * Creates new form TelaCadastro
@@ -86,11 +85,6 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
 
         buttonGroup1.add(radioFeminino);
         radioFeminino.setText("Feminino");
-        radioFeminino.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioFemininoActionPerformed(evt);
-            }
-        });
 
         botaoCadastrar.setText("Cadastrar");
         botaoCadastrar.addActionListener(new java.awt.event.ActionListener() {
@@ -191,17 +185,6 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void radioFemininoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioFemininoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radioFemininoActionPerformed
-
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
-        TelaLogin tela = new TelaLogin();
-        tela.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_formWindowClosed
-
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         // TODO add your handling code here:
         TelaLogin tela = new TelaLogin();
@@ -215,7 +198,14 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
         try {
             if(validaCadastro()){
                 Usuario u = cadastro();
-                dao.addUsuario(u);
+                if (dao.addUsuario(u)){
+                    JOptionPane.showMessageDialog(null, "Usuario Cadastrado com Sucesso");
+                    dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Erro: Email ja Cadastrado");
+                }                
+                
                 JOptionPane.showMessageDialog(null, dao.listar());
             }
             
@@ -234,6 +224,13 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
         
     }//GEN-LAST:event_botaoCadastrarActionPerformed
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        TelaLogin tela = new TelaLogin();
+        tela.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_formWindowClosed
+
     /**
      * @param args the command line arguments
      */
@@ -250,15 +247,14 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaCadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
