@@ -33,14 +33,10 @@ public class TelaInicial extends javax.swing.JFrame {
         botaoCadMovimentacao = new javax.swing.JButton();
         botaoGerFinancas = new javax.swing.JButton();
         botaoGerPerfil = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela Inicial");
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
         botaoCadMovimentacao.setText("Cadastrar Movimentação");
         botaoCadMovimentacao.addActionListener(new java.awt.event.ActionListener() {
@@ -63,6 +59,13 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Sair");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -75,6 +78,10 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(botaoGerPerfil)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -84,7 +91,9 @@ public class TelaInicial extends javax.swing.JFrame {
                     .addComponent(botaoCadMovimentacao)
                     .addComponent(botaoGerFinancas)
                     .addComponent(botaoGerPerfil))
-                .addContainerGap(259, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
 
         pack();
@@ -94,6 +103,7 @@ public class TelaInicial extends javax.swing.JFrame {
         // TODO add your handling code here:
         TelaCadastrarMovimentacao tela = new TelaCadastrarMovimentacao();
         tela.setVisible(true);
+        tela.recebeUsuario(u);
         dispose();
     }//GEN-LAST:event_botaoCadMovimentacaoActionPerformed
 
@@ -109,15 +119,16 @@ public class TelaInicial extends javax.swing.JFrame {
         // TODO add your handling code here:
         TelaGerenciarFinancas tela = new TelaGerenciarFinancas();
         tela.setVisible(true);
+        tela.recebeUsuario(u);
         dispose();
     }//GEN-LAST:event_botaoGerFinancasActionPerformed
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         TelaLogin tela = new TelaLogin();
         tela.setVisible(true);
         dispose();
-    }//GEN-LAST:event_formWindowClosing
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,10 +169,10 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JButton botaoCadMovimentacao;
     private javax.swing.JButton botaoGerFinancas;
     private javax.swing.JButton botaoGerPerfil;
+    private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
 
-    public void recebeUsuario(Usuario u) {
-        this.u = u;
-        
+    public void recebeUsuario(Usuario u) {        
+        this.u = u;        
     }
 }
