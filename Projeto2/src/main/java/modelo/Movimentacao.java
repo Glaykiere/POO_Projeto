@@ -6,7 +6,8 @@
 package modelo;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -17,13 +18,17 @@ public class Movimentacao implements Serializable{
     private static int cont;
     private final int codigo;
     private String descricao;
-    private LocalDate dataMov;
+    private Date dataMov;
     private float valor;
     private String tipo;
     private String categoria;
+    
+    public Movimentacao(){
+        this.codigo = ++cont;
+    }
 
-    public Movimentacao(String descricao, LocalDate dataMov, float valor, String tipo, String categoria) {
-        this.codigo = cont++;
+    public Movimentacao(String descricao, Date dataMov, float valor, String tipo, String categoria) {
+        this.codigo = ++cont;
         this.descricao = descricao;
         this.dataMov = dataMov;
         this.valor = valor;
@@ -43,11 +48,11 @@ public class Movimentacao implements Serializable{
         this.descricao = descricao;
     }
 
-    public LocalDate getDataMov() {
+    public Date getDataMov() {
         return dataMov;
     }
 
-    public void setDataMov(LocalDate dataMov) {
+    public void setDataMov(Date dataMov) {
         this.dataMov = dataMov;
     }
 
@@ -122,7 +127,7 @@ public class Movimentacao implements Serializable{
 
     @Override
     public String toString() {
-        return "Movimentacao{" + "codigo=" + codigo + ", descricao=" + descricao + ", dataMov=" + dataMov + ", valor=" + valor + ", tipo=" + tipo + ", categoria=" + categoria + '}';
+        return "Movimentacao{" + "codigo=" + codigo + ", descricao=" + descricao + ", dataMov=" + new SimpleDateFormat("dd/MM/yyyy").format(dataMov) + ", valor=" + valor + ", tipo=" + tipo + ", categoria=" + categoria + '}';
     }
     
     
