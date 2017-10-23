@@ -62,7 +62,8 @@ public class UsuarioDaoArquivo {
     
     public boolean removerUsuario(Usuario u) throws IOException, FileNotFoundException, ClassNotFoundException{
         List<Usuario> usuarios = listar();
-        if (usuarios.remove(u)){
+        Usuario user = buscar(u.getEmail());
+        if (usuarios.remove(user)){
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo));
             out.writeObject(usuarios);
             return true;
@@ -96,29 +97,27 @@ public class UsuarioDaoArquivo {
         return null;
     }
     
-    public List<Movimentacao> listar(Usuario u) throws FileNotFoundException, IOException, ClassNotFoundException {
-        if (arquivo.length()>0){
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(arquivo));
-            return (List<Movimentacao>) in.readObject();
-        }
-        else{
-            return new ArrayList<>();
-        }
-    }
-    
-    public boolean addMovimentacao(String email, Movimentacao mov) throws IOException, FileNotFoundException, ClassNotFoundException{
-        List<Usuario> usuarios = listar();
-        for (int i = 0; i < usuarios.size(); i++){
-            if (email.equals(usuarios.get(i).getEmail())){
-                usuarios.get(i).adicionaMovimentacao(mov);
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(arquivo));
-                out.writeObject(usuarios);
-                out.close();
-                return true;                
+    public boolean atualizar(Usuario u, Movimentacao m) throws IOException, FileNotFoundException, ClassNotFoundException {
+        List<Movimentacao> movimentacoes = u.getMovimentacao();
+        for (int i = 0; i < movimentacoes.size(); i++){
+            if (m.getDescricao().equals(movimentacoes.get(i).getDescricao())){
+                movimentacoes.set(i, m);
+                atualizar(u);
+                return true;
             }
-            
         }
         return false;
     }
+        
+    public Movimentacao buscar(Usuario u, int codigo) throws IOException, FileNotFoundException, ClassNotFoundException{
+        List<Movimentacao> movimentacoes = u.getMovimentacao();
+        for (Movimentacao m : movimentacoes){
+            if (m.getCodigo() == codigo){
+                return m;
+            }
+        }
+        return null;
+    }
+    
     
 }
