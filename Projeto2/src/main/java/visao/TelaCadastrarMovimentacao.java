@@ -5,12 +5,24 @@
  */
 package visao;
 
+import controle.UsuarioDaoArquivo;
+import excecao.FormularioException;
+import java.io.IOException;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import modelo.Movimentacao;
+import modelo.Usuario;
+
 /**
  *
  * @author glaykiere
  */
 public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
-
+    private Usuario u;
+    
     /**
      * Creates new form TelaCadastroMovimentacao
      */
@@ -36,15 +48,19 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
         radioSaida = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
         campoDescricao = new javax.swing.JTextField();
-        botaoCalendario = new javax.swing.JButton();
-        campoData = new javax.swing.JFormattedTextField();
         campoValor = new javax.swing.JFormattedTextField();
         comboCategoria = new javax.swing.JComboBox<>();
         botaoCancelar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        campoData = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela de Cadastro de Movimentação");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabel1.setText("Descrição");
 
@@ -62,11 +78,14 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
 
         jLabel5.setText("Categoria");
 
-        botaoCalendario.setText("Calendario");
-
-        comboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escolha uma Categoria", "Alimentação", "Cartão de Crédito", "Automóvel", "Despesas Gerais" }));
 
         botaoCancelar.setText("Cancelar");
+        botaoCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCancelarActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Cadastrar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -75,6 +94,8 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
             }
         });
 
+        campoData.setDateFormatString("dd/MM/yyyy");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,10 +103,6 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(botaoCalendario))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -99,10 +116,7 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
                                 .addComponent(radioEntrada)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                                 .addComponent(radioSaida)
-                                .addGap(65, 65, 65))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(campoData, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(65, 65, 65))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(18, 18, 18)
@@ -112,7 +126,11 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(botaoCancelar))
                             .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(54, 54, 54)
+                        .addComponent(campoData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -123,9 +141,8 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(campoDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
-                    .addComponent(botaoCalendario)
                     .addComponent(campoData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -151,10 +168,41 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            
+            if (validaCadastro()){
+                UsuarioDaoArquivo dao = new UsuarioDaoArquivo();
+                u.adicionaMovimentacao(movimentacao());
+                dao.atualizar(u);                
+                dispose();
+            }
+        } 
+        catch (FormularioException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
+        } 
+        catch (DateTimeParseException ex){
+            JOptionPane.showMessageDialog(null, "Data Invalida", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
+        }        
+        catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(TelaCadastrarMovimentacao.class.getName()).log(Level.SEVERE, null, ex);
+        } 
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        TelaInicial tela = new TelaInicial();
+        tela.setVisible(true);
+        tela.recebeUsuario(u);
+        dispose();
+    }//GEN-LAST:event_formWindowClosed
+
+    private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_botaoCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,15 +220,12 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastrarMovimentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastrarMovimentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastrarMovimentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaCadastrarMovimentacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
 
@@ -193,10 +238,9 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoCalendario;
     private javax.swing.JButton botaoCancelar;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JFormattedTextField campoData;
+    private com.toedter.calendar.JDateChooser campoData;
     private javax.swing.JTextField campoDescricao;
     private javax.swing.JFormattedTextField campoValor;
     private javax.swing.JComboBox<String> comboCategoria;
@@ -209,4 +253,58 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioEntrada;
     private javax.swing.JRadioButton radioSaida;
     // End of variables declaration//GEN-END:variables
+
+    public void recebeUsuario(Usuario u) {
+        this.u = u;
+    }
+    
+    private boolean validaCadastro() throws FormularioException {
+        if (campoDescricao.getText().equals("")){
+            throw new FormularioException("O campo Descricao nao pode ser vazio");
+        }
+        else{
+            if (campoData.getDateFormatString().equals("")){
+                throw new FormularioException("O campo Data deve ser preenchido corretamente");
+            }
+            else{
+                if (campoValor.getText().equals("")){
+                    throw new FormularioException("O campo Valor nao pode ser vazio");
+                }
+                else{
+                    if (!radioEntrada.isSelected() && !radioSaida.isSelected()){
+                      throw new FormularioException("Selecione um Tipo");
+                    }
+                    else{
+                        if (comboCategoria.getSelectedIndex() == 0){
+                            throw new FormularioException("Selecione uma Categoria");
+                        }
+                    }
+                    
+                }
+                
+            }
+                        
+        }
+        return true;
+        
+    }
+
+    private Movimentacao movimentacao() {
+        Movimentacao m;
+        String descricao = campoDescricao.getText();
+        Date data = campoData.getDate();
+        float valor = Float.parseFloat(campoValor.getText());
+        String tipo;
+        if (radioEntrada.isSelected()){
+            tipo = "Entrada";
+        }
+        else{
+            tipo = "Saida";
+        }
+        String categoria = comboCategoria.getItemAt(WIDTH);
+        return m = new Movimentacao(descricao, data, valor, tipo, categoria);
+        
+    }
+
+    
 }
