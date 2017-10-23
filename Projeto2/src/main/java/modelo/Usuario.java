@@ -6,8 +6,9 @@
 package modelo;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,19 +19,23 @@ import java.util.Objects;
 public class Usuario implements Serializable{
     private String email;
     private String nome;
-    private LocalDate nascimento;
+    private Date nascimento;
     private String sexo;
     private String senha;
-    private final List<Movimentacao> movimentacao;
+    private List<Movimentacao> movimentacao;
 
-    public Usuario(String email, String nome, LocalDate nascimento, String sexo, String senha) {
+    public Usuario() {        
+    } 
+    
+    public Usuario(String email, String nome, Date nascimento, String sexo, String senha) {
         this.email = email;
         this.nome = nome;
         this.nascimento = nascimento;
         this.sexo = sexo;
         this.senha = senha;
         this.movimentacao = new ArrayList<>();
-    }
+    }   
+    
 
     public String getEmail() {
         return email;
@@ -48,11 +53,11 @@ public class Usuario implements Serializable{
         this.nome = nome;
     }
 
-    public LocalDate getNascimento() {
+    public Date getNascimento() {
         return nascimento;
     }
 
-    public void setNascimento(LocalDate nascimento) {
+    public void setNascimento(Date nascimento) {
         this.nascimento = nascimento;
     }
 
@@ -70,6 +75,9 @@ public class Usuario implements Serializable{
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+    public List<Movimentacao> getMovimentacao(){
+        return movimentacao; 
     }
 
     @Override
@@ -119,7 +127,7 @@ public class Usuario implements Serializable{
 
     @Override
     public String toString() {
-        return "Usuario{" + "email=" + email + ", nome=" + nome + ", nascimento=" + nascimento + ", sexo=" + sexo + ", senha=" + senha + ", movimentacao=" + movimentacao + '}';
+        return "Usuario{" + "email=" + email + ", nome=" + nome + ", nascimento=" + new SimpleDateFormat("dd/MM/yyyy").format(nascimento) + ", sexo=" + sexo + ", senha=" + senha + ", movimentacao=" + movimentacao + '}';
     }
     
     public boolean adicionaMovimentacao(Movimentacao m){
