@@ -126,9 +126,9 @@ public class TelaLogin extends javax.swing.JFrame {
                 String senha = new String(campoSenha.getPassword());
                 if (u.autenticar(campoEmail.getText(), senha)){
                     JOptionPane.showMessageDialog(null, "Bem Vindo " +u.getNome());
-                    TelaInicial tela = new TelaInicial();                    
+                    TelaInicial tela = new TelaInicial();                   
                     tela.setVisible(true);
-                    tela.recebeUsuario(u);
+                    tela.recebeUsuario(u);                    
                     dispose();
                 }
                 else{
