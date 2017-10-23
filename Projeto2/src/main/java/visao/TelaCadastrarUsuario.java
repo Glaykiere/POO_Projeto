@@ -8,10 +8,9 @@ package visao;
 import controle.UsuarioDaoArquivo;
 import excecao.FormularioException;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -57,8 +56,7 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
         radioFeminino = new javax.swing.JRadioButton();
         botaoCadastrar = new javax.swing.JButton();
         botaoCancelar = new javax.swing.JButton();
-        campoNascimento = new javax.swing.JFormattedTextField();
-        jButton1 = new javax.swing.JButton();
+        campoNascimento = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela de Cadastro de Usuário");
@@ -100,13 +98,7 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
             }
         });
 
-        try {
-            campoNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        jButton1.setText("Calendário");
+        campoNascimento.setDateFormatString("dd/MM/yyyy");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -121,21 +113,17 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(radioMasculino)
-                            .addComponent(campoNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(radioMasculino)
                         .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1)
-                            .addComponent(radioFeminino, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(campoSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                        .addComponent(campoConfirmarSenha)
-                        .addComponent(campoNome)
-                        .addComponent(campoEmail)))
+                        .addComponent(radioFeminino, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                    .addComponent(campoConfirmarSenha)
+                    .addComponent(campoNome)
+                    .addComponent(campoEmail)
+                    .addComponent(campoNascimento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -156,10 +144,9 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
-                    .addComponent(campoNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(campoNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -175,7 +162,7 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(radioMasculino)
                         .addComponent(radioFeminino)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoCadastrar)
                     .addComponent(botaoCancelar))
@@ -187,8 +174,6 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         // TODO add your handling code here:
-        TelaLogin tela = new TelaLogin();
-        tela.setVisible(true);
         dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
@@ -274,10 +259,9 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPasswordField campoConfirmarSenha;
     private javax.swing.JTextField campoEmail;
-    private javax.swing.JFormattedTextField campoNascimento;
+    private com.toedter.calendar.JDateChooser campoNascimento;
     private javax.swing.JTextField campoNome;
     private javax.swing.JPasswordField campoSenha;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -297,7 +281,7 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
                 throw new FormularioException("O campo Nome nao pode ser vazio");
             }
             else{
-                if (campoNascimento.getText().equals("  /  /    ")){
+                if (campoNascimento.getDateFormatString().equals("")){
                     throw new FormularioException("O campo Nascimento deve ser preenchido corretamente");
                 }
                 else{
@@ -325,14 +309,14 @@ public class TelaCadastrarUsuario extends javax.swing.JFrame {
         return true;
     }
     
-    private Usuario cadastro() {
-        
+    private Usuario cadastro() {        
         Usuario u;
         String email = campoEmail.getText();
         String nome = campoNome.getText();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String sNascimento = campoNascimento.getText();
-        LocalDate nascimento = LocalDate.parse(sNascimento, formatter);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//        String sNascimento = campoNascimento.getDateFormatString();
+//        LocalDate nascimento = LocalDate.parse(sNascimento, formatter);
+        Date nascimento = campoNascimento.getDate();
         String sexo = "";
         if (radioFeminino.isSelected()){
             sexo = "Feminino";
