@@ -8,8 +8,6 @@ package visao;
 import controle.UsuarioDaoArquivo;
 import excecao.FormularioException;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -60,8 +58,7 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
         radioFeminino = new javax.swing.JRadioButton();
         botaoAtualizar = new javax.swing.JButton();
         botaoCancelar = new javax.swing.JButton();
-        campoNascimento = new javax.swing.JFormattedTextField();
-        jButton1 = new javax.swing.JButton();
+        campoNascimento = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela de Cadastro de Usuário");
@@ -111,7 +108,7 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Calendário");
+        campoNascimento.setDateFormatString("dd/MM/yyyy");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,20 +124,17 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(radioMasculino)
-                            .addComponent(campoNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1)
-                            .addComponent(radioFeminino, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(radioMasculino)
+                        .addGap(43, 43, 43)
+                        .addComponent(radioFeminino, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(campoSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                         .addComponent(campoConfirmarSenha)
                         .addComponent(campoNome)
-                        .addComponent(campoEmail)))
+                        .addComponent(campoEmail))
+                    .addComponent(campoNascimento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -161,10 +155,9 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(campoNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(campoNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -180,7 +173,7 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(radioMasculino)
                         .addComponent(radioFeminino)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoAtualizar)
                     .addComponent(botaoCancelar))
@@ -200,8 +193,7 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
             if(validaCadastro()){
                 Usuario atualizado = atualiza();
                 if (dao.atualizar(atualizado)){
-                    JOptionPane.showMessageDialog(null, "Usuario Atualizado com Sucesso");
-                    
+                    JOptionPane.showMessageDialog(null, "Usuario Atualizado com Sucesso");                    
                     dispose();
                 }
                 else{
@@ -229,7 +221,7 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
         campoEmail.setText(u.getEmail());
         campoEmail.setEnabled(false);
         campoNome.setText(u.getNome());
-        campoNascimento.setText(u.getNascimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        campoNascimento.setDate(u.getNascimento());
         if (u.getSexo().equals("Feminino")){
             radioFeminino.setSelected(true);
         }
@@ -240,10 +232,7 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        // TODO add your handling code here:
-        TelaInicial tela = new TelaInicial();
-        tela.setVisible(true);
-        recebeUsuario(u);
+        // TODO add your handling code here:       
         dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
@@ -306,10 +295,9 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPasswordField campoConfirmarSenha;
     private javax.swing.JTextField campoEmail;
-    private javax.swing.JFormattedTextField campoNascimento;
+    private com.toedter.calendar.JDateChooser campoNascimento;
     private javax.swing.JTextField campoNome;
     private javax.swing.JPasswordField campoSenha;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -320,7 +308,7 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioMasculino;
     // End of variables declaration//GEN-END:variables
 
-    void recebeUsuario(Usuario u) {
+    public void recebeUsuario(Usuario u) {
         this.u = u;
     }
 
@@ -333,7 +321,7 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
                 throw new FormularioException("O campo Nome nao pode ser vazio");
             }
             else{
-                if (campoNascimento.getText().equals("  /  /    ")){
+                if (campoNascimento.getDateFormatString().equals("")){
                     throw new FormularioException("O campo Nascimento deve ser preenchido corretamente");
                 }
                 else{
@@ -362,10 +350,8 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
     }
 
     private Usuario atualiza() {
-        u.setNome(campoNome.getText());        
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String sNascimento = campoNascimento.getText();
-        u.setNascimento(LocalDate.parse(sNascimento, formatter));
+        u.setNome(campoNome.getText());
+        u.setNascimento(campoNascimento.getDate());
         if (radioFeminino.isSelected()){
             u.setSexo("Feminino");
         }
