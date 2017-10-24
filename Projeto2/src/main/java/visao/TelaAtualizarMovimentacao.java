@@ -23,7 +23,7 @@ import modelo.Usuario;
 public class TelaAtualizarMovimentacao extends javax.swing.JFrame {
     private Usuario u;
     private UsuarioDaoArquivo dao;
-    private int linha;
+    private Movimentacao m;
     
     /**
      * Creates new form TelaCadastroMovimentacao
@@ -31,6 +31,7 @@ public class TelaAtualizarMovimentacao extends javax.swing.JFrame {
     public TelaAtualizarMovimentacao() {
         initComponents();
         dao = new UsuarioDaoArquivo();
+        
     }
 
     /**
@@ -60,9 +61,6 @@ public class TelaAtualizarMovimentacao extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela de Cadastro de Movimentação");
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
             }
@@ -178,8 +176,8 @@ public class TelaAtualizarMovimentacao extends javax.swing.JFrame {
             // TODO add your handling code here:
             
             if (validaCadastro()){
-                UsuarioDaoArquivo dao = new UsuarioDaoArquivo();
-                u.adicionaMovimentacao(movimentacao());
+                System.out.println(m.getCodigo());
+                System.out.println(u.atualizaMovimentacao(movimentacao()));
                 dao.atualizar(u);                
                 dispose();
             }
@@ -210,18 +208,6 @@ public class TelaAtualizarMovimentacao extends javax.swing.JFrame {
         tela.recebeUsuario(u);
         dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        try {
-            // TODO add your handling code here:
-            System.out.println(dao.buscar(u, linha).getDescricao());
-            campoDescricao.setText(dao.buscar(u, linha).getDescricao());
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(TelaAtualizarMovimentacao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -279,9 +265,6 @@ public class TelaAtualizarMovimentacao extends javax.swing.JFrame {
         this.u = u;
     }
     
-    void recebeLinha(int linha) {
-        this.linha = linha;
-    }
     
     private boolean validaCadastro() throws FormularioException {
         if (campoDescricao.getText().equals("")){
@@ -315,20 +298,34 @@ public class TelaAtualizarMovimentacao extends javax.swing.JFrame {
     }
 
     private Movimentacao movimentacao() {
-        Movimentacao m;
-        String descricao = campoDescricao.getText();
-        Date data = campoData.getDate();
-        float valor = Float.parseFloat(campoValor.getText());
-        String tipo;
+        
+        m.setDescricao(campoDescricao.getText());
+        m.setDataMov(campoData.getDate());
+        m.setValor(Float.parseFloat(campoValor.getText()));
         if (radioEntrada.isSelected()){
-            tipo = "Entrada";
+            m.setTipo("Entrada");
         }
         else{
-            tipo = "Saida";
+            m.setTipo("Saida");
         }
-        String categoria = comboCategoria.getItemAt(WIDTH);
-        return m = new Movimentacao(descricao, data, valor, tipo, categoria);
+        m.setCategoria(comboCategoria.getItemAt(comboCategoria.getSelectedIndex()));
         
+        return m;
+        
+    } 
+     
+    public void recebeMovimentacao(Movimentacao m) {
+        this.m = m;
+        campoDescricao.setText(m.getDescricao());
+        campoData.setDate(m.getDataMov());
+        campoValor.setValue(m.getValor());
+        if (m.getTipo().equals("Entrada")){
+            radioEntrada.setSelected(true);
+        }
+        else{
+            radioSaida.setSelected(true);
+        }
+        comboCategoria.setSelectedIndex(0);
     }
 
     
