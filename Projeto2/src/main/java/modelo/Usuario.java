@@ -131,8 +131,34 @@ public class Usuario implements Serializable{
     }
     
     public boolean adicionaMovimentacao(Movimentacao m){
-        return movimentacao.add(m);
+        Movimentacao mov = buscar(m.getCodigo());
+        if (mov == null){
+            return movimentacao.add(m);
+        }
+        else{
+            return false;
+        }
     }
+    
+    public Movimentacao buscar(int cod){
+        for(Movimentacao m : this.movimentacao){
+            if (m.getCodigo() == cod){
+                return m;
+            }
+        }
+        return null;
+    }
+    
+    public boolean atualizaMovimentacao(Movimentacao m){
+        List<Movimentacao> movimentacoes = this.movimentacao;
+        for (int i = 0; i < movimentacoes.size(); i++){
+           if(m.getCodigo() == movimentacoes.get(i).getCodigo()){
+               movimentacoes.set(i, m);
+               return true;
+           }
+        }
+        return false;
+    } 
     
     public boolean autenticar(String email, String senha){
         return this.email.equals(email) && this.senha.equals(senha);
