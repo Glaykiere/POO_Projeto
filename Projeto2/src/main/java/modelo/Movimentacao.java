@@ -24,11 +24,11 @@ public class Movimentacao implements Serializable{
     private String categoria;
     
     public Movimentacao(){
-        this.codigo = ++cont;
+        this.codigo = cont++;
     }
 
     public Movimentacao(String descricao, Date dataMov, float valor, String tipo, String categoria) {
-        this.codigo = ++cont;
+        this.codigo = cont++;
         this.descricao = descricao;
         this.dataMov = dataMov;
         this.valor = valor;
@@ -129,6 +129,7 @@ public class Movimentacao implements Serializable{
     public String toString() {
         return "Movimentacao{" + "codigo=" + codigo + ", descricao=" + descricao + ", dataMov=" + new SimpleDateFormat("dd/MM/yyyy").format(dataMov) + ", valor=" + valor + ", tipo=" + tipo + ", categoria=" + categoria + '}';
     }
+    
     
     
     
