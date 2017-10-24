@@ -173,7 +173,7 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
             
             if (validaCadastro()){
                 UsuarioDaoArquivo dao = new UsuarioDaoArquivo();
-                u.adicionaMovimentacao(movimentacao());
+                System.out.println(u.adicionaMovimentacao(movimentacao()));
                 dao.atualizar(u);                
                 dispose();
             }
@@ -301,7 +301,7 @@ public class TelaCadastrarMovimentacao extends javax.swing.JFrame {
         else{
             tipo = "Saida";
         }
-        String categoria = comboCategoria.getItemAt(WIDTH);
+        String categoria = comboCategoria.getItemAt(comboCategoria.getSelectedIndex());
         return m = new Movimentacao(descricao, data, valor, tipo, categoria);
         
     }
