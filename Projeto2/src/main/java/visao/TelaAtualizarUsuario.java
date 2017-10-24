@@ -61,11 +61,8 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
         campoNascimento = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Tela de Cadastro de Usuário");
+        setTitle("Tela de Atualização de Usuário");
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
             }
@@ -129,11 +126,10 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
                         .addComponent(radioMasculino)
                         .addGap(43, 43, 43)
                         .addComponent(radioFeminino, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(campoSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                        .addComponent(campoConfirmarSenha)
-                        .addComponent(campoNome)
-                        .addComponent(campoEmail))
+                    .addComponent(campoSenha)
+                    .addComponent(campoConfirmarSenha)
+                    .addComponent(campoNome)
+                    .addComponent(campoEmail)
                     .addComponent(campoNascimento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -216,21 +212,6 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
         
     }//GEN-LAST:event_botaoAtualizarActionPerformed
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-        campoEmail.setText(u.getEmail());
-        campoEmail.setEnabled(false);
-        campoNome.setText(u.getNome());
-        campoNascimento.setDate(u.getNascimento());
-        if (u.getSexo().equals("Feminino")){
-            radioFeminino.setSelected(true);
-        }
-        else{
-            radioMasculino.setSelected(true);
-        }
-        campoSenha.setText(u.getSenha());
-    }//GEN-LAST:event_formWindowOpened
-
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         // TODO add your handling code here:       
         dispose();
@@ -310,6 +291,18 @@ public class TelaAtualizarUsuario extends javax.swing.JFrame {
 
     public void recebeUsuario(Usuario u) {
         this.u = u;
+        campoEmail.setText(u.getEmail());
+        campoEmail.setEnabled(false);
+        campoNome.setText(u.getNome());
+        campoNascimento.setDate(u.getNascimento());
+        if (u.getSexo().equals("Feminino")){
+            radioFeminino.setSelected(true);
+        }
+        else{
+            radioMasculino.setSelected(true);
+        }
+        campoSenha.setText(u.getSenha());
+        
     }
 
     private boolean validaCadastro() throws FormularioException {

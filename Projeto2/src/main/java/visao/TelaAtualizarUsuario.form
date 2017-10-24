@@ -7,14 +7,13 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="title" type="java.lang.String" value="Tela de Cadastro de Usu&#xe1;rio"/>
+    <Property name="title" type="java.lang.String" value="Tela de Atualiza&#xe7;&#xe3;o de Usu&#xe1;rio"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <Events>
-    <EventHandler event="windowOpened" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowOpened"/>
     <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosed"/>
   </Events>
   <AuxValues>
@@ -49,12 +48,10 @@
                       <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                       <Component id="radioFeminino" min="-2" pref="89" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="campoSenha" pref="228" max="32767" attributes="0"/>
-                      <Component id="campoConfirmarSenha" max="32767" attributes="0"/>
-                      <Component id="campoNome" alignment="0" max="32767" attributes="0"/>
-                      <Component id="campoEmail" alignment="0" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="campoSenha" max="32767" attributes="0"/>
+                  <Component id="campoConfirmarSenha" max="32767" attributes="0"/>
+                  <Component id="campoNome" alignment="0" max="32767" attributes="0"/>
+                  <Component id="campoEmail" alignment="0" max="32767" attributes="0"/>
                   <Component id="campoNascimento" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
