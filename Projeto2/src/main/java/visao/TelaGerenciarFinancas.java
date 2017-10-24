@@ -6,14 +6,19 @@
 package visao;
 
 import controle.UsuarioDaoArquivo;
-import java.io.IOException;
+import excecao.FormularioException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Movimentacao;
 import modelo.Usuario;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 /**
  *
@@ -22,6 +27,9 @@ import modelo.Usuario;
 public class TelaGerenciarFinancas extends javax.swing.JFrame {
     private Usuario u;
     private UsuarioDaoArquivo dao;
+    private Movimentacao m;
+    private float valorEntrada;
+    private float valorSaida;
 
     /**
      * Creates new form TelaGerenciarFinancas
@@ -49,6 +57,7 @@ public class TelaGerenciarFinancas extends javax.swing.JFrame {
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
         jButton2 = new javax.swing.JButton();
+        botaoGerarTabela = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela de Gerenciamento de Finanças");
@@ -73,7 +82,7 @@ public class TelaGerenciarFinancas extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Data", "Descrição", "Tipo", "Valor"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -96,6 +105,13 @@ public class TelaGerenciarFinancas extends javax.swing.JFrame {
             }
         });
 
+        botaoGerarTabela.setText("Gerar");
+        botaoGerarTabela.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoGerarTabelaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,17 +123,22 @@ public class TelaGerenciarFinancas extends javax.swing.JFrame {
                         .addGap(59, 59, 59)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1)
+                        .addContainerGap(160, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(35, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(botaoGerarTabela))
+                            .addComponent(jScrollPane1))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,7 +149,8 @@ public class TelaGerenciarFinancas extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addComponent(jLabel2))
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botaoGerarTabela))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -156,21 +178,50 @@ public class TelaGerenciarFinancas extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
+        DefaultPieDataset data = new DefaultPieDataset();
+        data.setValue("Entrada", valorEntrada);
+        data.setValue("Saida", valorSaida);       
+ 
+        JFreeChart chart = ChartFactory.createPieChart("Entrada e Saida de Movimentacoes", data, true, true, false);
+ 
+        ChartFrame frame = new ChartFrame("JFreeChart", chart);
+        frame.pack();
+        frame.setVisible(true);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        int linha = jTable1.getSelectedRow();
         TelaAtualizarMovimentacao tela = new TelaAtualizarMovimentacao();
-        tela.recebeUsuario(u);
-        tela.recebeLinha(linha);
-        try {
-            System.out.println(dao.buscar(u, linha).getDescricao());
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(TelaGerenciarFinancas.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        dispose();
+        tela.setVisible(true);
+        m = u.buscar(jTable1.getSelectedRow());
+        tela.recebeUsuario(u);  
+
+        
+        System.out.println(m);
+        tela.recebeMovimentacao(m);
+        
+        System.out.println(jTable1.getSelectedRow());
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void botaoGerarTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoGerarTabelaActionPerformed
+        // TODO add your handling code here:
+        if (jDateChooser1.getDate() == null || jDateChooser2.getDate() == null){
+            JOptionPane.showMessageDialog(null, "Preencha as datas inicial e final", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        else if (jDateChooser1.getDate().compareTo(jDateChooser2.getDate()) > 0 ){
+            JOptionPane.showMessageDialog(null, "A data inicial nao pode ser menor que a final", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
+        
+        }
+//        String dataInicial = new SimpleDateFormat("dd/MM/yyy").format(jDateChooser1.getDate());
+//        String dataFinal = new SimpleDateFormat("dd/MM/yyy").format(jDateChooser2.getDate());
+//        System.out.println(dataInicial.compareTo(dataFinal));
+        
+        else{
+            inicializarTabela();
+            atualizarTabela();
+        }
+    }//GEN-LAST:event_botaoGerarTabelaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,6 +259,7 @@ public class TelaGerenciarFinancas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botaoGerarTabela;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private com.toedter.calendar.JDateChooser jDateChooser1;
@@ -219,30 +271,72 @@ public class TelaGerenciarFinancas extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void inicializarTabela() {
-        String titulo[] = {"Data", "Descricao", "Tipo", "Valor"};
-        List<Movimentacao> movimentacoes = u.getMovimentacao();
-                  
+        String titulo[] = {"Data", "Descricao", "Tipo", "Valor", "Categoria"};
+        
+        Object matriz[][];
         
         
-        String matriz[][];
-        
-        if (movimentacoes == null){
-            matriz = new String[1][4];
+            matriz = new String[1][5];
             matriz[0][0] = "";
             matriz[0][1] = "";
             matriz[0][2] = "";
             matriz[0][3] = "";
+            matriz[0][4] = "";
+            
+        
+        
+        DefaultTableModel modelo = new DefaultTableModel(matriz, titulo);
+        jTable1.setModel(modelo);
+    }
+    
+    private void atualizarTabela() {
+        String titulo[] = {"Data", "Descricao", "Tipo", "Valor", "Categoria"};
+        
+        SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+        String dataInicial = formatoData.format(jDateChooser1.getDate());
+        String dataFinal = formatoData.format(jDateChooser2.getDate());
+        
+        List<Movimentacao> movimentacoes = u.getMovimentacao();
+            
+        
+        Object matriz[][];
+        
+        if (movimentacoes == null){
+            matriz = new String[1][5];
+            matriz[0][0] = "";
+            matriz[0][1] = "";
+            matriz[0][2] = "";
+            matriz[0][3] = "";
+            matriz[0][4] = "";
             
         }
         else{
-            matriz = new String[movimentacoes.size()][4];
-            
+            int contaLinha = 0;
             for (int i = 0; i < movimentacoes.size(); i++){
-                Movimentacao m = movimentacoes.get(i);
-                matriz[i][0] = new SimpleDateFormat("dd/MM/yyyy").format(m.getDataMov());
-                matriz[i][1] = m.getDescricao();
-                matriz[i][2] = m.getTipo();
-                matriz[i][3] = "R$ "+m.getValor();
+                if (formatoData.format(u.getMovimentacao().get(i).getDataMov()).compareTo(dataInicial) >= 0 && formatoData.format(u.getMovimentacao().get(i).getDataMov()).compareTo(dataFinal) <= 0){
+                    contaLinha++;
+                    if(u.getMovimentacao().get(i).getTipo().equals("Entrada")){
+                        valorEntrada += u.getMovimentacao().get(i).getValor();
+                    }else{
+                        valorSaida += u.getMovimentacao().get(i).getValor();
+                    }
+                    
+                    System.out.println(contaLinha);
+                }
+            }
+            matriz = new Object[contaLinha][5];
+            int cont = 0;
+            for (int i = 0; i < movimentacoes.size(); i++){
+                if (formatoData.format(u.getMovimentacao().get(i).getDataMov()).compareTo(dataInicial) >= 0 && formatoData.format(u.getMovimentacao().get(i).getDataMov()).compareTo(dataFinal) <= 0){
+                    Movimentacao mov = movimentacoes.get(cont);
+                    matriz[i][0] = formatoData.format(mov.getDataMov());
+                    matriz[i][1] = mov.getDescricao();
+                    matriz[i][2] = mov.getTipo();
+                    matriz[i][3] = mov.getValor();
+                    matriz[i][4] = mov.getCategoria();
+                    ++cont;
+                }
+                
             }
         }
         
