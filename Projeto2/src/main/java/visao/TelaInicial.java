@@ -109,7 +109,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void botaoGerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoGerPerfilActionPerformed
         // TODO add your handling code here:
-        TelaAtualizarUsuario tela = new TelaAtualizarUsuario();        
+        TelaGerenciarUsuario tela = new TelaGerenciarUsuario();        
         tela.setVisible(true);
         tela.recebeUsuario(u);
         dispose();
